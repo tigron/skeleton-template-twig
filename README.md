@@ -12,7 +12,8 @@ Installation via composer:
 
 ## Howto
 
-Initialize the application directory
+Load the library, point it to your template directory, assign a variable if you
+need to and go!
 
     <?php
     $renderer = new \Skeleton\Template\Twig\Twig();
