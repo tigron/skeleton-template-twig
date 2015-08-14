@@ -62,7 +62,7 @@ class Twig {
 			]
 		);
 
-		if (class_exists('\\Skeleton\\I18n\\Translation') {
+		if (class_exists('\\Skeleton\\I18n\\Translation')) {
 			$this->i18n_available = true;
 			$this->twig->addExtension(new \Skeleton\I18n\Template\Twig\Extension\Tigron());
 		}
