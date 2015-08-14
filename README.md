@@ -1,4 +1,4 @@
-# skeleton-core
+# skeleton-template-twig
 
 ## Description
 
