@@ -71,7 +71,7 @@ class Twig {
 			$this->twig->addExtension(new \Twig_Extension_Debug());
 		}
 
-		$this->twig->addExtension(new \Skeleton\Template\Twig\Extension\Default());
+		$this->twig->addExtension(new \Skeleton\Template\Twig\Extension\Common());
 		$this->twig->addExtension(new \Twig_Extension_StringLoader());
 		$this->twig->getExtension('core')->setNumberFormat(2, '.', '');
 	}

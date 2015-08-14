@@ -8,7 +8,7 @@
 
 namespace Skeleton\Template\Twig\Extension;
 
-class Default extends \Twig_Extension {
+class Common extends \Twig_Extension {
 
 	private $environment;
 
@@ -239,6 +239,6 @@ class Default extends \Twig_Extension {
      * @return string
      */
     public function getName() {
-        return 'Default';
+        return 'Common';
     }
 }
