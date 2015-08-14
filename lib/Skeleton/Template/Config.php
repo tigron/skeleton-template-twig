@@ -6,7 +6,7 @@
  * @author Gerry Demaret <gerry@tigron.be>
  */
 
-namespace Skeleton\Template;
+namespace Skeleton\Template\Twig;
 
 class Config {
 
