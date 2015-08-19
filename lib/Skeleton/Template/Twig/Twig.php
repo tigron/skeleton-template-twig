@@ -56,7 +56,7 @@ class Twig {
 		$this->twig = new \Twig_Environment(
 			$chain_loader,
 			[
-				'cache' => TMP_PATH . '/twig/',
+				'cache' => Config::$cache_directory,
 				'auto_reload' => true,
 				'debug' => true
 			]

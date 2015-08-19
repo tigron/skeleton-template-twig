@@ -17,4 +17,14 @@ class Config {
 	 * @var bool $debug
 	 */
 	public static $debug = false;
+
+	/**
+	 * Cache directory
+	 *
+	 * This folder will be used to store the cached templates
+	 *
+	 * @access public
+	 * @var string $cache_directory
+	 */
+	public static $cache_directory = '/tmp';
 }
