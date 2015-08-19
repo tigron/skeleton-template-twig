@@ -25,6 +25,14 @@ class Twig {
 	private $variables = [];
 
 	/**
+	 * Variables to add to the environment
+	 *
+	 * @access private
+	 * @var array $environment
+	 */
+	private $environment = [];
+
+	/**
 	 * Translation
 	 *
 	 * @access private
@@ -88,6 +96,16 @@ class Twig {
 	}
 
 	/**
+	 * Add an environment variable
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 */
+	public function add_environment($key, $value) {
+		$this->environment[$key] = $value;
+	}
+
+	/**
 	 * Assign variables to the template
 	 *
 	 * @param string $key
@@ -126,6 +144,8 @@ class Twig {
 			'server' => $_SERVER,
 			'language' => 	$this->translation->language,
 		];
+
+		$variables = array_merge($variables, $this->environment);
 
 		if ($this->i18n_available === true) {
 			$variables['translation'] = $this->translation;
