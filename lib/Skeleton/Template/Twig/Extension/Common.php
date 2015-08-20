@@ -58,6 +58,7 @@ class Common extends \Twig_Extension {
 			new \Twig_SimpleFilter('date', [$this, 'date_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
 			new \Twig_SimpleFilter('datetime', [$this, 'datetime_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
 			new \Twig_SimpleFilter('filesize', [$this, 'filesize_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
+			new \Twig_SimpleFilter('rewrite', [$this, 'rewrite_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
         ];
 	}
 
@@ -187,6 +188,20 @@ class Common extends \Twig_Extension {
 		} else {
 			return 'unknown';
 		}
+	}
+
+	/**
+	 * Filter rewrite
+	 *
+	 * @param string $url
+	 * @return string $output
+	 */
+	public function rewrite_filter(\Twig_Environment $env, $url) {
+		if (class_exists('\Skeleton\Core\Util')) {
+			return \Skeleton\Core\Util::rewrite_reverse_link($url);
+		}
+
+		return "foo";
 	}
 
 	/**
