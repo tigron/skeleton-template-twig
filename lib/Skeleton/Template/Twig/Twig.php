@@ -138,7 +138,7 @@ class Twig {
 	 * @return string $html
 	 */
 	public function render($template) {
-		$variables = [
+		$environment = [
 			'post' => $_POST,
 			'get' => $_GET,
 			'cookie' => $_COOKIE,
@@ -146,19 +146,17 @@ class Twig {
 			'language' => 	$this->translation->language,
 		];
 
-		$variables = array_merge($variables, $this->environment);
+		$environment = array_merge($environment, $this->environment);
 
 		if ($this->i18n_available === true) {
-			$variables['translation'] = $this->translation;
+			$environment['translation'] = $this->translation;
 		}
 
 		if (isset($_SESSION)) {
-			$variables['session'] = $_SESSION;
-			// FIXME: this is going to be broken
-			//$variables['session_sticky'] = Web_Session_Sticky::Get();
+			$environment['session'] = $_SESSION;
 		}
 
-		$this->twig->addGlobal('env', $variables);
+		$this->twig->addGlobal('env', $environment);
 		return $this->twig->render($template, $this->variables);
 	}
 }
