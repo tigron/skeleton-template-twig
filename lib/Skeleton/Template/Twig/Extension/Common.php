@@ -198,7 +198,7 @@ class Common extends \Twig_Extension {
 	 */
 	public function rewrite_filter(\Twig_Environment $env, $url) {
 		if (class_exists('\Skeleton\Core\Util')) {
-			return \Skeleton\Core\Util::rewrite_reverse_link($url);
+			return \Skeleton\Core\Util::rewrite_reverse($url);
 		}
 
 		return "foo";
