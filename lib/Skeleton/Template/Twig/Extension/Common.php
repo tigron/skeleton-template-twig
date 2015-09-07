@@ -59,6 +59,7 @@ class Common extends \Twig_Extension {
 			new \Twig_SimpleFilter('datetime', [$this, 'datetime_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
 			new \Twig_SimpleFilter('filesize', [$this, 'filesize_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
 			new \Twig_SimpleFilter('rewrite', [$this, 'rewrite_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
+			new \Twig_SimpleFilter('markdown', [$this, 'markdown_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
         ];
 	}
 
@@ -202,6 +203,17 @@ class Common extends \Twig_Extension {
 		}
 
 		return "foo";
+	}
+
+	/**
+	 * Filter markdown
+	 *
+	 * @param string $content
+	 * @return string $output
+	 */
+	public function markdown_filter(\Twig_Environment $env, $content) {
+		// FIXME dummy filter for now
+		return $content;
 	}
 
 	/**
