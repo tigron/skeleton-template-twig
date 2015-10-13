@@ -145,13 +145,13 @@ class Twig {
 			'get' => $_GET,
 			'cookie' => $_COOKIE,
 			'server' => $_SERVER,
-			'language' => 	$this->translation->language,
 		];
 
 		$environment = array_merge($environment, $this->environment);
 
-		if ($this->i18n_available === true) {
+		if ($this->i18n_available === true and $this->translation !== null) {
 			$environment['translation'] = $this->translation;
+			$environment['language'] = $this->translation->language;
 		}
 
 		if (isset($_SESSION)) {
