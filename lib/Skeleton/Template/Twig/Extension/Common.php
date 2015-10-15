@@ -36,7 +36,7 @@ class Common extends \Twig_Extension {
 		$globals = [];
 		foreach ($templates as $key => $template) {
 			try {
-				$loaded_template = $this->environment->loadTemplate('_default/macro.base.twig');
+				$loaded_template = $this->environment->loadTemplate($template);
 				$globals[$key] = $loaded_template;
 			} catch (\Twig_Error_Loader $e) { }
 		}
