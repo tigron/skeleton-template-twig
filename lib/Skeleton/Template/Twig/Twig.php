@@ -49,6 +49,14 @@ class Twig {
 	private $i18n_available = false;
 
 	/**
+	 * filesystem_loader
+	 *
+	 * @access private
+	 * @var Twig_Loader_Filesystem $filesystem
+	 */
+	private $filesystem_loader = null;
+
+	/**
 	 * Constructor
 	 *
 	 * @param string $name
@@ -92,9 +100,16 @@ class Twig {
 	 * @access public
 	 * @param string $directory
 	 */
-	public function set_template_directory($directory) {
-		$loader = new \Twig_Loader_Filesystem($directory);
-		$this->twig->setLoader($loader);
+	public function add_template_directory($directory, $namespace = null) {
+		if ($this->filesystem_loader === null) {
+			$this->filesystem_loader = new \Twig_Loader_Filesystem($directory);
+		}
+
+		if ($namespace === null) {
+			$this->filesystem_loader->addPath($directory);
+		} else {
+			$this->filesystem_loader->addPath($directory, $namespace);
+		}
 	}
 
 	/**
@@ -156,7 +171,7 @@ class Twig {
 		if (isset($_SESSION)) {
 			$environment['session'] = $_SESSION;
 		}
-
+		$this->twig->setLoader($this->filesystem_loader);
 		$this->twig->addGlobal('env', $environment);
 		return $this->twig->render($template, $this->variables);
 	}
