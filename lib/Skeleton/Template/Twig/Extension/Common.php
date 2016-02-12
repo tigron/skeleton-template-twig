@@ -60,6 +60,7 @@ class Common extends \Twig_Extension {
 			new \Twig_SimpleFilter('filesize', [$this, 'filesize_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
 			new \Twig_SimpleFilter('rewrite', [$this, 'rewrite_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
 			new \Twig_SimpleFilter('object_sort', [$this, 'object_sort_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
+			new \Twig_SimpleFilter('get_class', [$this, 'get_class_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
 		];
 	}
 
@@ -72,6 +73,17 @@ class Common extends \Twig_Extension {
 		return [
 			new \Twig_SimpleFunction('strpos', [$this, 'strpos_function'], ['is_safe' => ['html']]),
 		];
+	}
+
+	/**
+	 * Get class filter
+	 *
+	 * @param mixed $value
+	 * @param bool $raw
+	 * @return string $classname
+	 */
+	public function get_class_filter($value, $raw = true) {
+		return get_class($value);
 	}
 
 	/**
