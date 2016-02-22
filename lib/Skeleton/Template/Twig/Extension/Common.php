@@ -62,6 +62,7 @@ class Common extends \Twig_Extension {
 			new \Twig_SimpleFilter('object_sort', [$this, 'object_sort_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
 			new \Twig_SimpleFilter('get_class', [$this, 'get_class_filter'], ['is_safe' => ['html']]),
 			new \Twig_SimpleFilter('reverse_rewrite', [$this, 'reverse_rewrite_filter'], ['is_safe' => ['html']]),
+			new \Twig_SimpleFilter('transliterate', [$this, 'transliterate_filter'], ['is_safe' => ['html']]),
 		];
 	}
 
@@ -97,6 +98,7 @@ class Common extends \Twig_Extension {
 	public function reverse_rewrite_filter($value, $raw = true) {
 		return \Skeleton\Core\Util::rewrite_reverse($value);
 	}
+
 	/**
 	 * Filter print_r
 	 *
@@ -117,6 +119,17 @@ class Common extends \Twig_Extension {
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Filter transliterate
+	 *
+	 * @param mixed $value
+	 * @param mixed $transliterator
+	 * @return string $output
+	 */
+	public function transliterate_filter($value, $transliterator = 'Any-Latin;') {
+		return transliterator_transliterate($transliterator, $value);
 	}
 
 	/**
