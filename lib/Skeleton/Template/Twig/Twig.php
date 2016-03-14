@@ -8,6 +8,9 @@
 
 namespace Skeleton\Template\Twig;
 
+use Aptoma\Twig\Extension\MarkdownExtension;
+use Aptoma\Twig\Extension\MarkdownEngine;
+
 class Twig {
 	/**
 	 * Local Twig instance
@@ -90,6 +93,12 @@ class Twig {
 		$this->twig->addExtension(new \Skeleton\Template\Twig\Extension\Common());
 		$this->twig->addExtension(new \Twig_Extension_StringLoader());
 		$this->twig->addExtension(new \Twig_Extensions_Extension_Text());
+
+		$parser = new \Skeleton\Template\Twig\Extension\Markdown\Engine();
+		$parser->single_linebreak = true;
+		$this->twig->addExtension(new MarkdownExtension(
+			$parser
+		));
 
 		$this->twig->getExtension('core')->setNumberFormat(2, '.', '');
 	}

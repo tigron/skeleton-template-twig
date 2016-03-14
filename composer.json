@@ -4,7 +4,9 @@
     "type": "library",
     "require": {
 		"twig/twig": "1.*",
-		"twig/extensions": "1.0.*@dev"
+		"twig/extensions": "1.0.*@dev",
+    	"aptoma/twig-markdown": "2.0.*",
+    	"michelf/php-markdown": "1.5.*"
     },
     "license": "MIT",
     "authors": [
