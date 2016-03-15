@@ -6,7 +6,7 @@
 		"twig/twig": "1.*",
 		"twig/extensions": "1.0.*@dev",
     	"aptoma/twig-markdown": "2.0.*",
-    	"michelf/php-markdown": "1.5.*"
+    	"michelf/php-markdown": "~1.5.0"
     },
     "license": "MIT",
     "authors": [
