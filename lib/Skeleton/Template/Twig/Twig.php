@@ -77,7 +77,8 @@ class Twig {
 			[
 				'cache' => Config::$cache_directory,
 				'auto_reload' => true,
-				'debug' => Config::$debug
+				'debug' => Config::$debug,
+				'autoescape' => Config::$autoescape
 			]
 		);
 

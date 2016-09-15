@@ -27,4 +27,14 @@ class Config {
 	 * @var string $cache_directory
 	 */
 	public static $cache_directory = '/tmp';
+
+	/**
+	 * Auto_escape
+	 *
+	 * Indicate if the resulting template should be auto-escaped
+	 *
+	 * @access public
+	 * @var bool $autoescape
+	 */
+	public static $autoescape = true;
 }

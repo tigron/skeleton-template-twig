@@ -24,3 +24,24 @@ need to and go!
     $renderer->set_translation($skeleton_i18n_translation_instance);
 
     echo $renderer->render('template.twig');
+
+Extra configuration:
+
+	/**
+	 * Enable debugging
+	 */
+	\Skelton\Template\Twig\Config::$debug = false;
+
+	/**
+	 * Cache directory
+	 *
+	 * This folder will be used to store the cached templates
+	 */
+	\Skelton\Template\Twig\Config::$cache_directory = '/tmp';
+
+	/**
+	 * Auto_escape
+	 *
+	 * Indicate if the resulting template should be auto-escaped
+	 */
+	\Skelton\Template\Twig\Config::$autoescape = true;
