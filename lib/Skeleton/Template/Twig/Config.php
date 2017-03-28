@@ -37,4 +37,34 @@ class Config {
 	 * @var bool $autoescape
 	 */
 	public static $autoescape = true;
+
+	/**
+	 * Extensions
+	 *
+	 * @access private
+	 * @var array $extensions
+	 */
+	private static $extensions = [];
+
+	/**
+	 * Add Extension
+	 *
+	 * Add an extension for custom functions and filters
+	 *
+	 * @access public
+	 * @param string $classname
+	 */
+	public static function add_extension($classname) {
+		self::$extensions[] = $classname;
+	}
+
+	/**
+	 * Get extensions
+	 *
+	 * @access public
+	 * @return array $extensions
+	 */
+	public static function get_extensions() {
+		return self::$extensions;
+	}
 }
