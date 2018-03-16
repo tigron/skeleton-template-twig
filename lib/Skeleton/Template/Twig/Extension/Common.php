@@ -63,6 +63,7 @@ class Common extends \Twig_Extension {
 			new \Twig_SimpleFilter('get_class', [$this, 'get_class_filter'], ['is_safe' => ['html']]),
 			new \Twig_SimpleFilter('reverse_rewrite', [$this, 'reverse_rewrite_filter'], ['is_safe' => ['html']]),
 			new \Twig_SimpleFilter('transliterate', [$this, 'transliterate_filter'], ['is_safe' => ['html']]),
+			new \Twig_SimpleFilter('byte_format', [$this, 'byte_format_filter'], ['is_safe' => ['html']]),
 		];
 	}
 
@@ -293,6 +294,41 @@ class Common extends \Twig_Extension {
 	 */
 	public function strpos_function($value, $to_search) {
 		return strpos($value, $to_search);
+	}
+
+	/**
+	 * Function byte_format_filter
+	 *
+	 * @param mixed $bytes
+	 * @param string $si Use SI units (or not)
+	 * @return mixed $group_thousands
+	 */
+	public function byte_format_filter($bytes, $si = false, $group_thousands = false) {
+		if ($si === true) {
+			$unit = 1000;
+			$prefix = 'kMGTPE';
+		} else {
+			$unit = 1024;
+			$prefix = 'KMGTPE';
+		}
+
+		if ($bytes <= $unit) {
+			if ($group_thousands === true) {
+				return number_format($bytes) . ' B';
+			}
+
+			return $bytes . ' B';
+		}
+
+		$exponent = intval((log($bytes) / log($unit)));
+		$prefix = $prefix[$exponent - 1] . ($si ? "" : "i");
+		$number = sprintf("%.1f", $bytes / pow($unit, $exponent));
+
+		if ($group_thousands === true) {
+			$number = number_format($number);
+		}
+
+		return sprintf("%.1f %sB", $number, $prefix);
 	}
 
 	/**
