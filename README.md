@@ -17,7 +17,7 @@ need to and go!
 
     <?php
     $renderer = new \Skeleton\Template\Twig\Twig();
-    $renderer->set_template_directory('/path/to/my/templates/');
+    $renderer->add_template_directory('/path/to/my/templates/');
     $renderer->assign('my_variable', 'some value');
 
     // Optional translation support (requires skeleton-i18n)
