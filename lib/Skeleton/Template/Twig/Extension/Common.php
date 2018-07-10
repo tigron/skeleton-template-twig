@@ -312,6 +312,10 @@ class Common extends \Twig_Extension {
 			$prefix = 'KMGTPE';
 		}
 
+		if ($bytes == "") {
+			$bytes = 0;
+		}
+
 		if ($bytes <= $unit) {
 			if ($group_thousands === true) {
 				return number_format($bytes) . ' B';
