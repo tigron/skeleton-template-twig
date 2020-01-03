@@ -3,7 +3,8 @@
     "description": " Twig templating for Skeleton",
     "type": "library",
     "require": {
-	"twig/twig": "3.*"
+        "twig/twig": "3.*",
+        "twig/extra-bundle": "3.*"
     },
     "license": "MIT",
     "authors": [
