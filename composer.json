@@ -3,10 +3,7 @@
     "description": " Twig templating for Skeleton",
     "type": "library",
     "require": {
-	"twig/twig": "1.37.*",
-	"twig/extensions": "1.0.*@dev",
-    	"aptoma/twig-markdown": "2.0.*",
-    	"michelf/php-markdown": "*"
+	"twig/twig": "3.*"
     },
     "license": "MIT",
     "authors": [
