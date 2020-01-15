@@ -4,7 +4,8 @@
     "type": "library",
     "require": {
         "twig/twig": "3.*",
-        "twig/extra-bundle": "3.*"
+        "twig/extra-bundle": "3.*",
+        "twig/markdown-extra": "3.*"
     },
     "license": "MIT",
     "authors": [

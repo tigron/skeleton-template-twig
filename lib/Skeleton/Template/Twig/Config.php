@@ -4,6 +4,7 @@
  *
  * @author Christophe Gosiau <christophe@tigron.be>
  * @author Gerry Demaret <gerry@tigron.be>
+ * @author David Vandemaele <david@tigron.be>
  */
 
 namespace Skeleton\Template\Twig;
@@ -36,7 +37,7 @@ class Config {
 	 * @access public
 	 * @var bool $autoescape
 	 */
-	public static $autoescape = true;
+	public static $autoescape = 'name';
 
 	/**
 	 * Extensions

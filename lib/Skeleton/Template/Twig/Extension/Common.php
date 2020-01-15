@@ -8,41 +8,7 @@
 
 namespace Skeleton\Template\Twig\Extension;
 
-class Common extends \Twig_Extension {
-
-	private $environment;
-
-	/**
-	 * Init runtime
-	 *
-	 * @access public
-	 */
-	public function initRuntime(\Twig_Environment $environment) {
-		parent::initRuntime($environment);
-		$this->environment = $environment;
-	}
-
-	/**
-	 * Returns a list of globals
-	 *
-	 * @return array
-	 */
-	public function getGlobals() {
-		$templates = [
-			'base' => '_default/macro.base.twig',
-			'form' => '_default/form.base.twig',
-		];
-
-		$globals = [];
-		foreach ($templates as $key => $template) {
-			try {
-				$loaded_template = $this->environment->loadTemplate($template);
-				$globals[$key] = $loaded_template;
-			} catch (\Twig_Error_Loader $e) { }
-		}
-
-		return $globals;
-	}
+class Common extends \Twig\Extension\AbstractExtension {
 
 	/**
 	 * Returns a list of filters
@@ -51,19 +17,19 @@ class Common extends \Twig_Extension {
 	 */
 	public function getFilters() {
 		return [
-			new \Twig_SimpleFilter('print_r', [$this, 'print_r_filter'], ['is_safe' => ['html']]),
-			new \Twig_SimpleFilter('json_decode', [$this, 'json_decode_filter'], ['is_safe' => ['html']]),
-			new \Twig_SimpleFilter('serialize', [$this, 'serialize_filter'], ['is_safe' => ['html']]),
-			new \Twig_SimpleFilter('round', [$this, 'round_filter'], ['is_safe' => ['html']]),
-			new \Twig_SimpleFilter('date', [$this, 'date_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
-			new \Twig_SimpleFilter('datetime', [$this, 'datetime_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
-			new \Twig_SimpleFilter('filesize', [$this, 'filesize_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
-			new \Twig_SimpleFilter('rewrite', [$this, 'rewrite_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
-			new \Twig_SimpleFilter('object_sort', [$this, 'object_sort_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
-			new \Twig_SimpleFilter('get_class', [$this, 'get_class_filter'], ['is_safe' => ['html']]),
-			new \Twig_SimpleFilter('reverse_rewrite', [$this, 'reverse_rewrite_filter'], ['is_safe' => ['html']]),
-			new \Twig_SimpleFilter('transliterate', [$this, 'transliterate_filter'], ['is_safe' => ['html']]),
-			new \Twig_SimpleFilter('byte_format', [$this, 'byte_format_filter'], ['is_safe' => ['html']]),
+			new \Twig\TwigFilter('print_r', [$this, 'print_r_filter'], ['is_safe' => ['html']]),
+			new \Twig\TwigFilter('json_decode', [$this, 'json_decode_filter'], ['is_safe' => ['html']]),
+			new \Twig\TwigFilter('serialize', [$this, 'serialize_filter'], ['is_safe' => ['html']]),
+			new \Twig\TwigFilter('round', [$this, 'round_filter'], ['is_safe' => ['html']]),
+			new \Twig\TwigFilter('date', [$this, 'date_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
+			new \Twig\TwigFilter('datetime', [$this, 'datetime_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
+			new \Twig\TwigFilter('filesize', [$this, 'filesize_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
+			new \Twig\TwigFilter('rewrite', [$this, 'rewrite_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
+			new \Twig\TwigFilter('object_sort', [$this, 'object_sort_filter'], ['needs_environment' => true, 'is_safe' => ['html']]),
+			new \Twig\TwigFilter('get_class', [$this, 'get_class_filter'], ['is_safe' => ['html']]),
+			new \Twig\TwigFilter('reverse_rewrite', [$this, 'reverse_rewrite_filter'], ['is_safe' => ['html']]),
+			new \Twig\TwigFilter('transliterate', [$this, 'transliterate_filter'], ['is_safe' => ['html']]),
+			new \Twig\TwigFilter('byte_format', [$this, 'byte_format_filter'], ['is_safe' => ['html']]),
 		];
 	}
 
@@ -74,7 +40,7 @@ class Common extends \Twig_Extension {
 	 */
 	public function getFunctions() {
 		return [
-			new \Twig_SimpleFunction('strpos', [$this, 'strpos_function'], ['is_safe' => ['html']]),
+			new \Twig\TwigFunction('strpos', [$this, 'strpos_function'], ['is_safe' => ['html']]),
 		];
 	}
 
@@ -171,7 +137,7 @@ class Common extends \Twig_Extension {
 	 * @param string $format
 	 * @return string $output
 	 */
-	public function date_filter(\Twig_Environment $env, $date, $format = 'd/m/Y') {
+	public function date_filter(\Twig\Environment $env, $date, $format = 'd/m/Y') {
 		return twig_date_format_filter($env, $date, $format);
 	}
 
@@ -182,7 +148,7 @@ class Common extends \Twig_Extension {
 	 * @param string $format
 	 * @return string $output
 	 */
-	public function datetime_filter(\Twig_Environment $env, $datetime, $format = 'd/m/Y H:i:s') {
+	public function datetime_filter(\Twig\Environment $env, $datetime, $format = 'd/m/Y H:i:s') {
 		return twig_date_format_filter($env, $datetime, $format);
 	}
 
@@ -195,7 +161,7 @@ class Common extends \Twig_Extension {
 	 * @param string $system System to use, can be "iec" (default) or "metric"
 	 * @return string $output
 	 */
-	public function filesize_filter(\Twig_Environment $env, $filesize, $precision = 2, $decimal_mark = '.', $system = 'iec') {
+	public function filesize_filter(\Twig\Environment $env, $filesize, $precision = 2, $decimal_mark = '.', $system = 'iec') {
 		$iec_suffixes = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
 		$metric_suffixes = ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
@@ -229,7 +195,7 @@ class Common extends \Twig_Extension {
 	 * @param string $url
 	 * @return string $output
 	 */
-	public function rewrite_filter(\Twig_Environment $env, $url) {
+	public function rewrite_filter(\Twig\Environment $env, $url) {
 		if (class_exists('\Skeleton\Core\Util')) {
 			return \Skeleton\Core\Util::rewrite_reverse($url);
 		}
@@ -246,7 +212,7 @@ class Common extends \Twig_Extension {
 	 * @param string $type Type of sorting to apply, can be "auto" (default), "string" or "date"
 	 * @return string $output
 	 */
-	public function object_sort(\Twig_Environment $env, $objects, $property, $direction = 'asc', $type = 'auto') {
+	public function object_sort(\Twig\Environment $env, $objects, $property, $direction = 'asc', $type = 'auto') {
 		usort($objects, function($a, $b) use ($property, $direction, $type) {
 			if (!is_object($property) AND isset($a->$property)) {
 				$property1 = $a->$property;
