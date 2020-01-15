@@ -68,8 +68,7 @@ class Twig {
 	 */
 	public function __construct() {
 		$chain_loader = new \Twig\Loader\ChainLoader([
-			new \Twig\Loader\FilesystemLoader(),
-			//new \Twig_Loader_String() => Deprecated
+			new \Twig\Loader\FilesystemLoader()
 		]);
 
 		$this->twig = new \Twig\Environment(
@@ -93,14 +92,8 @@ class Twig {
 
 		$this->twig->addExtension(new \Skeleton\Template\Twig\Extension\Common());
 		$this->twig->addExtension(new \Twig\Extension\StringLoaderExtension());
-		$this->twig->addExtension(new \Twig\Extra\Markdown\MarkdownMarkdownExtension());
-		//$this->twig->addExtension(new \Twig_Extensions_Extension_Text());
-
-		/*$parser = new \Skeleton\Template\Twig\Extension\Markdown\Engine();
-		$parser->single_linebreak = true;
-		$this->twig->addExtension(new MarkdownExtension(
-			$parser
-		));*/
+		$this->twig->addExtension(new \Twig\Extra\Markdown\MarkdownExtension());
+		$this->twig->addExtension(new \Twig\Extra\String\StringExtension());
 
 		$extensions = Config::get_extensions();
 		foreach ($extensions as $extension) {
@@ -108,6 +101,14 @@ class Twig {
 		}
 
 		$this->twig->getExtension('\Twig\Extension\CoreExtension')->setNumberFormat(2, '.', '');
+
+		$this->twig->addRuntimeLoader(new class implements \Twig\RuntimeLoader\RuntimeLoaderInterface {
+			public function load($class) {
+				if (\Twig\Extra\Markdown\MarkdownRuntime::class === $class) {
+					return new \Twig\Extra\Markdown\MarkdownRuntime(new \Twig\Extra\Markdown\DefaultMarkdown());
+				}
+			}
+		});
 	}
 
 	/**
