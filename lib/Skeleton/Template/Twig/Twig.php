@@ -9,9 +9,6 @@
 
 namespace Skeleton\Template\Twig;
 
-use Aptoma\Twig\Extension\MarkdownExtension;
-use Aptoma\Twig\Extension\MarkdownEngine;
-
 class Twig {
 	/**
 	 * Local Twig instance
@@ -92,8 +89,8 @@ class Twig {
 
 		$this->twig->addExtension(new \Skeleton\Template\Twig\Extension\Common());
 		$this->twig->addExtension(new \Twig\Extension\StringLoaderExtension());
-		$this->twig->addExtension(new \Twig\Extra\Markdown\MarkdownExtension());
 		$this->twig->addExtension(new \Twig\Extra\String\StringExtension());
+		$this->twig->addExtension(new \Twig\Extra\Markdown\MarkdownExtension());
 
 		$extensions = Config::get_extensions();
 		foreach ($extensions as $extension) {
@@ -105,7 +102,7 @@ class Twig {
 		$this->twig->addRuntimeLoader(new class implements \Twig\RuntimeLoader\RuntimeLoaderInterface {
 			public function load($class) {
 				if (\Twig\Extra\Markdown\MarkdownRuntime::class === $class) {
-					return new \Twig\Extra\Markdown\MarkdownRuntime(new \Twig\Extra\Markdown\DefaultMarkdown());
+					return new \Twig\Extra\Markdown\MarkdownRuntime(new \Skeleton\Template\Twig\Extension\Markdown\Engine());
 				}
 			}
 		});
