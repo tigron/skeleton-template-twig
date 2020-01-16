@@ -4,12 +4,10 @@
  *
  * @author Christophe Gosiau <christophe@tigron.be>
  * @author Gerry Demaret <gerry@tigron.be>
+ * @author David Vandemaele <david@tigron.be>
  */
 
 namespace Skeleton\Template\Twig;
-
-use Aptoma\Twig\Extension\MarkdownExtension;
-use Aptoma\Twig\Extension\MarkdownEngine;
 
 class Twig {
 	/**
@@ -66,13 +64,11 @@ class Twig {
 	 * @param Language $language
 	 */
 	public function __construct() {
-		\Twig_Autoloader::register();
-		$chain_loader = new \Twig_Loader_Chain([
-			new \Twig_Loader_Filesystem(),
-			new \Twig_Loader_String()
+		$chain_loader = new \Twig\Loader\ChainLoader([
+			new \Twig\Loader\FilesystemLoader()
 		]);
 
-		$this->twig = new \Twig_Environment(
+		$this->twig = new \Twig\Environment(
 			$chain_loader,
 			[
 				'cache' => Config::$cache_directory,
@@ -88,25 +84,28 @@ class Twig {
 		}
 
 		if (Config::$debug === true) {
-			$this->twig->addExtension(new \Twig_Extension_Debug());
+			$this->twig->addExtension(new \Twig\Extension\DebugExtension());
 		}
 
 		$this->twig->addExtension(new \Skeleton\Template\Twig\Extension\Common());
-		$this->twig->addExtension(new \Twig_Extension_StringLoader());
-		$this->twig->addExtension(new \Twig_Extensions_Extension_Text());
-
-		$parser = new \Skeleton\Template\Twig\Extension\Markdown\Engine();
-		$parser->single_linebreak = true;
-		$this->twig->addExtension(new MarkdownExtension(
-			$parser
-		));
+		$this->twig->addExtension(new \Twig\Extension\StringLoaderExtension());
+		$this->twig->addExtension(new \Twig\Extra\String\StringExtension());
+		$this->twig->addExtension(new \Twig\Extra\Markdown\MarkdownExtension());
 
 		$extensions = Config::get_extensions();
 		foreach ($extensions as $extension) {
 			$this->twig->addExtension(new $extension());
 		}
 
-		$this->twig->getExtension('core')->setNumberFormat(2, '.', '');
+		$this->twig->getExtension('\Twig\Extension\CoreExtension')->setNumberFormat(2, '.', '');
+
+		$this->twig->addRuntimeLoader(new class implements \Twig\RuntimeLoader\RuntimeLoaderInterface {
+			public function load($class) {
+				if (\Twig\Extra\Markdown\MarkdownRuntime::class === $class) {
+					return new \Twig\Extra\Markdown\MarkdownRuntime(new \Skeleton\Template\Twig\Extension\Markdown\Engine());
+				}
+			}
+		});
 	}
 
 	/**
@@ -117,7 +116,7 @@ class Twig {
 	 */
 	public function add_template_directory($directory, $namespace = null) {
 		if ($this->filesystem_loader === null) {
-			$this->filesystem_loader = new \Twig_Loader_Filesystem($directory);
+			$this->filesystem_loader = new \Twig\Loader\FilesystemLoader($directory);
 		}
 
 		if ($namespace === null) {
@@ -188,6 +187,7 @@ class Twig {
 		}
 		$this->twig->setLoader($this->filesystem_loader);
 		$this->twig->addGlobal('env', $environment);
+
 		return $this->twig->render($template, $this->variables);
 	}
 }
