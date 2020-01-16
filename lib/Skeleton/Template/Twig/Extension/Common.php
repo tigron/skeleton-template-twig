@@ -64,6 +64,7 @@ class Common extends \Twig_Extension {
 			new \Twig_SimpleFilter('reverse_rewrite', [$this, 'reverse_rewrite_filter'], ['is_safe' => ['html']]),
 			new \Twig_SimpleFilter('transliterate', [$this, 'transliterate_filter'], ['is_safe' => ['html']]),
 			new \Twig_SimpleFilter('byte_format', [$this, 'byte_format_filter'], ['is_safe' => ['html']]),
+			new \Twig\TwigFilter('markdown_to_html', [ $this, 'markdown_to_html' ])
 		];
 	}
 
@@ -333,6 +334,20 @@ class Common extends \Twig_Extension {
 		}
 
 		return sprintf("%.1f %sB", $number, $prefix);
+	}
+
+	/**
+	 * Convert markdown to html
+	 *
+	 * @access public
+	 * @param string $string
+	 * @return string $markdown
+	 */
+	public function markdown_to_html($content) {
+		$parser = new \Skeleton\Template\Twig\Extension\Markdown\Engine();
+		$parser->single_linebreak = true;
+		$ext = new \Aptoma\Twig\Extension\MarkdownExtension($parser);
+		return $ext->parseMarkdown($content);
 	}
 
 	/**
