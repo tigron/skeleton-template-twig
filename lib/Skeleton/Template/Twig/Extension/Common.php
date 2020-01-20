@@ -64,7 +64,7 @@ class Common extends \Twig_Extension {
 			new \Twig_SimpleFilter('reverse_rewrite', [$this, 'reverse_rewrite_filter'], ['is_safe' => ['html']]),
 			new \Twig_SimpleFilter('transliterate', [$this, 'transliterate_filter'], ['is_safe' => ['html']]),
 			new \Twig_SimpleFilter('byte_format', [$this, 'byte_format_filter'], ['is_safe' => ['html']]),
-			new \Twig\TwigFilter('markdown_to_html', [ $this, 'markdown_to_html' ])
+			new \Twig\TwigFilter('markdown_to_html', [ $this, 'markdown_to_html_filter' ])
 		];
 	}
 
@@ -247,7 +247,7 @@ class Common extends \Twig_Extension {
 	 * @param string $type Type of sorting to apply, can be "auto" (default), "string" or "date"
 	 * @return string $output
 	 */
-	public function object_sort(\Twig_Environment $env, $objects, $property, $direction = 'asc', $type = 'auto') {
+	public function object_sort_filter(\Twig_Environment $env, $objects, $property, $direction = 'asc', $type = 'auto') {
 		usort($objects, function($a, $b) use ($property, $direction, $type) {
 			if (!is_object($property) AND isset($a->$property)) {
 				$property1 = $a->$property;
@@ -343,7 +343,7 @@ class Common extends \Twig_Extension {
 	 * @param string $string
 	 * @return string $markdown
 	 */
-	public function markdown_to_html($content) {
+	public function markdown_to_html_filter($content) {
 		$parser = new \Skeleton\Template\Twig\Extension\Markdown\Engine();
 		$parser->single_linebreak = true;
 		$ext = new \Aptoma\Twig\Extension\MarkdownExtension($parser);
