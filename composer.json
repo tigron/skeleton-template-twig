@@ -1,6 +1,6 @@
 {
     "name": "tigron/skeleton-template-twig",
-    "description": " Twig templating for Skeleton",
+    "description": "Twig templating for Skeleton",
     "type": "library",
     "require": {
         "twig/twig": "3.*",
