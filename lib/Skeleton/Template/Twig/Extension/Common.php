@@ -64,7 +64,7 @@ class Common extends \Twig_Extension {
 			new \Twig_SimpleFilter('reverse_rewrite', [$this, 'reverse_rewrite_filter'], ['is_safe' => ['html']]),
 			new \Twig_SimpleFilter('transliterate', [$this, 'transliterate_filter'], ['is_safe' => ['html']]),
 			new \Twig_SimpleFilter('byte_format', [$this, 'byte_format_filter'], ['is_safe' => ['html']]),
-			new \Twig\TwigFilter('markdown_to_html', [ $this, 'markdown_to_html_filter' ])
+			new \Twig\TwigFilter('markdown_to_html', [ $this, 'markdown_to_html_filter' ], ['is_safe' => ['html']])
 		];
 	}
 
