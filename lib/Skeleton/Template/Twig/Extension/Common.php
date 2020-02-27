@@ -254,7 +254,7 @@ class Common extends \Twig_Extension {
 				$property2 = $b->$property;
 			} elseif (is_callable([$a, $property])) {
 				$property1 = call_user_func_array([$a, $property], []);
-				$property2 = call_user_func_array([$a, $property], []);
+				$property2 = call_user_func_array([$b, $property], []);
 			} elseif (is_callable($property)) {
 				$property1 = $property($a);
 				$property2 = $property($b);
