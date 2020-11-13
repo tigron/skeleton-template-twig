@@ -212,20 +212,20 @@ class Common extends \Twig\Extension\AbstractExtension {
 	 * @param string $type Type of sorting to apply, can be "auto" (default), "string" or "date"
 	 * @return string $output
 	 */
-	public function object_sort(\Twig\Environment $env, $objects, $property, $direction = 'asc', $type = 'auto') {
+	public function object_sort_filter(\Twig\Environment $env, $objects, $property, $direction = 'asc', $type = 'auto') {
 		usort($objects, function($a, $b) use ($property, $direction, $type) {
-			if (!is_object($property) AND isset($a->$property)) {
+			if (!is_object($property) && isset($a->$property)) {
 				$property1 = $a->$property;
 				$property2 = $b->$property;
 			} elseif (is_callable([$a, $property])) {
 				$property1 = call_user_func_array([$a, $property], []);
-				$property2 = call_user_func_array([$a, $property], []);
+				$property2 = call_user_func_array([$b, $property], []);
 			} elseif (is_callable($property)) {
 				$property1 = $property($a);
 				$property2 = $property($b);
 			}
 
-			if (is_numeric($property1) AND is_numeric($property2) AND $type == 'auto') {
+			if (is_numeric($property1) && is_numeric($property2) && $type == 'auto') {
 				$type = 'int';
 			}
 
