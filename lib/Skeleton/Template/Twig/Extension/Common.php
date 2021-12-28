@@ -30,6 +30,7 @@ class Common extends \Twig\Extension\AbstractExtension {
 			new \Twig\TwigFilter('reverse_rewrite', [$this, 'reverse_rewrite_filter'], ['is_safe' => ['html']]),
 			new \Twig\TwigFilter('transliterate', [$this, 'transliterate_filter'], ['is_safe' => ['html']]),
 			new \Twig\TwigFilter('byte_format', [$this, 'byte_format_filter'], ['is_safe' => ['html']]),
+			new \Twig\TwigFilter('truncate', [$this, 'truncate_filter'], ['needs_environment' => true]),
 		];
 	}
 
@@ -299,6 +300,30 @@ class Common extends \Twig\Extension\AbstractExtension {
 		}
 
 		return sprintf("%.1f %sB", $number, $prefix);
+	}
+
+	/**
+	 * Function twig_truncate_filter
+	 *
+	 * @access public
+	 * @param Environment $environment
+	 * @param string $value
+	 * @param int $length
+	 * @param boolean $preserve
+	 * @param string $separator
+	 */
+	public function truncate_filter(\Twig\Environment $env, $value, $length = 30, $preserve = false, $separator = '...') {
+		if (mb_strlen($value, $env->getCharset()) > $length) {
+			if ($preserve) {
+				// If breakpoint is on the last word, return the value without separator.
+				if (false === ($breakpoint = mb_strpos($value, ' ', $length, $env->getCharset()))) {
+					return $value;
+				}
+				$length = $breakpoint;
+			}
+			return rtrim(mb_substr($value, 0, $length, $env->getCharset())).$separator;
+		}
+		return $value;
 	}
 
 	/**
