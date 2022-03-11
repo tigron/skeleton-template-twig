@@ -27,7 +27,8 @@ class Config {
 	 * @access public
 	 * @var string $cache_directory
 	 */
-	public static $cache_directory = '/tmp';
+	public static $cache_path = '/tmp';
+	public static $cache_directory = null;	 // @Deprecated
 
 	/**
 	 * Auto_escape

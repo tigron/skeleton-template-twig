@@ -68,10 +68,14 @@ class Twig {
 			new \Twig\Loader\FilesystemLoader()
 		]);
 
+		if (!isset(Config::$cache_path) and isset(Config::$cache_directory)) {
+			Config::$cache_path = Config::$cache_directory;
+		}
+
 		$this->twig = new \Twig\Environment(
 			$chain_loader,
 			[
-				'cache' => Config::$cache_directory,
+				'cache' => Config::$cache_path,
 				'auto_reload' => true,
 				'debug' => Config::$debug,
 				'autoescape' => Config::$autoescape
@@ -115,14 +119,27 @@ class Twig {
 	 * @param string $directory
 	 */
 	public function add_template_directory($directory, $namespace = null) {
+		/**
+		 * @Deprecated: for backwards compatibility
+		 */
+		$this->add_template_path($directory, $namespace);
+	}
+
+	/**
+	 * Add Template path
+	 *
+	 * @access public
+	 * @param string $path
+	 */
+	public function add_template_path($path, $namespace = null) {
 		if ($this->filesystem_loader === null) {
-			$this->filesystem_loader = new \Twig\Loader\FilesystemLoader($directory);
+			$this->filesystem_loader = new \Twig\Loader\FilesystemLoader($path);
 		}
 
 		if ($namespace === null) {
-			$this->filesystem_loader->addPath($directory);
+			$this->filesystem_loader->addPath($path);
 		} else {
-			$this->filesystem_loader->addPath($directory, $namespace);
+			$this->filesystem_loader->addPath($path, $namespace);
 		}
 	}
 

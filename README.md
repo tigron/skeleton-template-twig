@@ -17,7 +17,7 @@ need to and go!
 
     <?php
     $renderer = new \Skeleton\Template\Twig\Twig();
-    $renderer->add_template_directory('/path/to/my/templates/');
+    $renderer->add_template_path('/path/to/my/templates/');
     $renderer->assign('my_variable', 'some value');
 
     // Optional translation support (requires skeleton-i18n)
@@ -33,11 +33,11 @@ Extra configuration:
 	\Skelton\Template\Twig\Config::$debug = false;
 
 	/**
-	 * Cache directory
+	 * Cache path
 	 *
-	 * This folder will be used to store the cached templates
+	 * This directory will be used to store the cached templates
 	 */
-	\Skelton\Template\Twig\Config::$cache_directory = '/tmp';
+	\Skelton\Template\Twig\Config::$cache_path = '/tmp';
 
 	/**
 	 * Auto_escape
