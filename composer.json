@@ -7,6 +7,7 @@
         "twig/extra-bundle": "3.*",
         "twig/markdown-extra": "3.*",
         "twig/string-extra": "3.*",
+        "twig/twig/cache-extra": "3.*",
         "michelf/php-markdown": "^1.8"
     },
     "license": "MIT",
