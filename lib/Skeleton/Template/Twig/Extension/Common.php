@@ -208,19 +208,36 @@ class Common extends \Twig\Extension\AbstractExtension {
 	 * Filter object_sort
 	 *
 	 * @param array $objects Array containing the objects to be supported
-	 * @param string $property Property on which to sort the objects
+	 * @deprecated Will be removed when using named parameters
+	 * @param string|array $property on which to sort the objects
+	 * - property of object (string)
+	 * - class method of object (without passing parameters; string)
+	 * - class method of object (with parameters; array with name of the method, and array of parameters you want to pass)
+	 * - function (string)
 	 * @param string $direction Direction in which to sort the objects
 	 * @param string $type Type of sorting to apply, can be "auto" (default), "string" or "date"
 	 * @return string $output
 	 */
 	public function object_sort_filter(\Twig\Environment $env, $objects, $property, $direction = 'asc', $type = 'auto') {
+		if (is_array($property) && (count($property) !== 2 || !is_array($property[1]))) {
+			return $objects;
+		}
+
 		usort($objects, function($a, $b) use ($property, $direction, $type) {
-			if (!is_object($property) && isset($a->$property)) {
+			if (is_array($property)) {
+				$method = $property[0];
+				$params = $property[1];
+			} elseif (is_callable([$a, $property])) {
+				$method = $property;
+				$params = [];
+			}
+
+			if (is_string($property) && isset($a->$property)) {
 				$property1 = $a->$property;
 				$property2 = $b->$property;
-			} elseif (is_callable([$a, $property])) {
-				$property1 = call_user_func_array([$a, $property], []);
-				$property2 = call_user_func_array([$b, $property], []);
+			} elseif (isset($method) && isset($params)) {
+				$property1 = call_user_func_array([$a, $method], $params);
+				$property2 = call_user_func_array([$b, $method], $params);
 			} elseif (is_callable($property)) {
 				$property1 = $property($a);
 				$property2 = $property($b);
