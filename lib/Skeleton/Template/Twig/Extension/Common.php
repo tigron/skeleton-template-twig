@@ -232,7 +232,20 @@ class Common extends \Twig\Extension\AbstractExtension {
 				$params = [];
 			}
 
-			if (is_string($property) && isset($a->$property)) {
+			if (is_string($property)) {
+				// Check if requested property does exist.
+				try {
+					$property1 = $a->$property;
+					$property_exists = true;
+				} catch (\Exception $e) {}
+
+				// If property does not exist and function can't be called, halt sorting
+				if (!isset($method) && !isset($property_exists) && !is_callable($property)) {
+					throw new \Exception('The key "' . $property . '" does not exist for this object');
+				}
+			}
+
+			if (isset($property_exists)) {
 				$property1 = $a->$property;
 				$property2 = $b->$property;
 			} elseif (isset($method) && isset($params)) {
@@ -241,6 +254,9 @@ class Common extends \Twig\Extension\AbstractExtension {
 			} elseif (is_callable($property)) {
 				$property1 = $property($a);
 				$property2 = $property($b);
+			} else {
+				// Should never happen
+				throw new \Exception('Not possible to sort by "' . $property . '"');
 			}
 
 			if (is_numeric($property1) && is_numeric($property2) && $type == 'auto') {
