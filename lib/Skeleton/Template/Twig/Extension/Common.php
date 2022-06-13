@@ -242,6 +242,8 @@ class Common extends \Twig\Extension\AbstractExtension {
 						$property1 = $a->$property;
 						$property2 = $b->$property;
 					}
+
+					$property_exists = true;
 				} catch (\Exception $e) {
 					// Property does not exist
 				}
@@ -252,15 +254,18 @@ class Common extends \Twig\Extension\AbstractExtension {
 				}
 			}
 
-			if (isset($method) && isset($params)) {
-				$property1 = call_user_func_array([$a, $method], $params);
-				$property2 = call_user_func_array([$b, $method], $params);
-			} elseif (is_callable($property)) {
-				$property1 = $property($a);
-				$property2 = $property($b);
-			} elseif (!isset($property1)) {
-				// Should never happen
-				throw new \Exception('Not possible to sort by "' . $property . '"');
+			// Not a regular array/object property.
+			if (!isset($property_exists)) {
+				if (isset($method) && isset($params)) {
+					$property1 = call_user_func_array([$a, $method], $params);
+					$property2 = call_user_func_array([$b, $method], $params);
+				} elseif (is_callable($property)) {
+					$property1 = $property($a);
+					$property2 = $property($b);
+				} else {
+					// Should never happen
+					throw new \Exception('Not possible to sort by "' . $property . '"');
+				}
 			}
 
 			if (is_numeric($property1) && is_numeric($property2) && $type == 'auto') {
