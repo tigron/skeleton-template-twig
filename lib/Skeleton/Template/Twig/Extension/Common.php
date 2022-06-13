@@ -220,7 +220,7 @@ class Common extends \Twig\Extension\AbstractExtension {
 	 */
 	public function object_sort_filter(\Twig\Environment $env, $objects, $property, $direction = 'asc', $type = 'auto') {
 		if (is_array($property) && (count($property) !== 2 || !is_array($property[1]))) {
-			return $objects;
+			throw new \Exception('Invalid sorting params defined');
 		}
 
 		usort($objects, function($a, $b) use ($property, $direction, $type) {
@@ -239,6 +239,11 @@ class Common extends \Twig\Extension\AbstractExtension {
 					$property_exists = true;
 				} catch (\Exception $e) {}
 
+				try {
+					$property1 = $a[$property];
+					$property_exists = true;
+				} catch (\Exception $e) {}
+
 				// If property does not exist and function can't be called, halt sorting
 				if (!isset($method) && !isset($property_exists) && !is_callable($property)) {
 					throw new \Exception('The key "' . $property . '" does not exist for this object');
@@ -246,8 +251,13 @@ class Common extends \Twig\Extension\AbstractExtension {
 			}
 
 			if (isset($property_exists)) {
-				$property1 = $a->$property;
-				$property2 = $b->$property;
+				if (is_array($a)) {
+					$property1 = $a[$property];
+					$property2 = $b[$property];
+				} else {
+					$property1 = $a->$property;
+					$property2 = $b->$property;
+				}
 			} elseif (isset($method) && isset($params)) {
 				$property1 = call_user_func_array([$a, $method], $params);
 				$property2 = call_user_func_array([$b, $method], $params);
