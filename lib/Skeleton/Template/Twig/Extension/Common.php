@@ -235,36 +235,30 @@ class Common extends \Twig\Extension\AbstractExtension {
 			if (is_string($property)) {
 				// Check if requested property does exist.
 				try {
-					$property1 = $a->$property;
-					$property_exists = true;
-				} catch (\Exception $e) {}
-
-				try {
-					$property1 = $a[$property];
-					$property_exists = true;
-				} catch (\Exception $e) {}
+					if (is_array($a)) {
+						$property1 = $a[$property];
+						$property2 = $b[$property];
+					} else {
+						$property1 = $a->$property;
+						$property2 = $b->$property;
+					}
+				} catch (\Exception $e) {
+					// Property does not exist
+				}
 
 				// If property does not exist and function can't be called, halt sorting
-				if (!isset($method) && !isset($property_exists) && !is_callable($property)) {
+				if (!isset($method) && !isset($property1) && !is_callable($property)) {
 					throw new \Exception('The key "' . $property . '" does not exist for this object');
 				}
 			}
 
-			if (isset($property_exists)) {
-				if (is_array($a)) {
-					$property1 = $a[$property];
-					$property2 = $b[$property];
-				} else {
-					$property1 = $a->$property;
-					$property2 = $b->$property;
-				}
-			} elseif (isset($method) && isset($params)) {
+			if (isset($method) && isset($params)) {
 				$property1 = call_user_func_array([$a, $method], $params);
 				$property2 = call_user_func_array([$b, $method], $params);
 			} elseif (is_callable($property)) {
 				$property1 = $property($a);
 				$property2 = $property($b);
-			} else {
+			} elseif (!isset($property1)) {
 				// Should never happen
 				throw new \Exception('Not possible to sort by "' . $property . '"');
 			}
