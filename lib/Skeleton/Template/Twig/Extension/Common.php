@@ -270,6 +270,8 @@ class Common extends \Twig\Extension\AbstractExtension {
 
 			if (is_numeric($property1) && is_numeric($property2) && $type == 'auto') {
 				$type = 'int';
+			} elseif (is_string($property1) && is_string($property2) && $type == 'auto') {
+				$type = 'string';
 			}
 
 			if ($type == 'string') {
