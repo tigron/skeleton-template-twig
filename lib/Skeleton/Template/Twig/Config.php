@@ -22,12 +22,13 @@ class Config {
 	/**
 	 * Cache directory
 	 *
-	 * This folder will be used to store the cached templates
+	 * This folder will be used to store the cached templates. This will default
+	 * to the the path returned by sys_get_temp_dir() if not set.
 	 *
 	 * @access public
 	 * @var string $cache_directory
 	 */
-	public static $cache_path = '/tmp';
+	public static $cache_path = null;
 	public static $cache_directory = null;	 // @Deprecated
 
 	/**

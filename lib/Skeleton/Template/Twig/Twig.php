@@ -72,6 +72,10 @@ class Twig {
 			Config::$cache_path = Config::$cache_directory;
 		}
 
+		if (Config::$cache_path === null) {
+			Config::$cache_path = sys_get_temp_dir();
+		}
+
 		$this->twig = new \Twig\Environment(
 			$chain_loader,
 			[
