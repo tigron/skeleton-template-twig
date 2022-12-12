@@ -88,7 +88,6 @@ class Twig {
 
 		if (class_exists('\\Skeleton\\I18n\\Translation')) {
 			$this->i18n_available = true;
-			$this->twig->addExtension(new \Skeleton\I18n\Template\Twig\Extension\Tigron());
 		}
 
 		if (Config::$debug === true) {
@@ -185,6 +184,7 @@ class Twig {
 	public function set_translation(\Skeleton\I18n\Translation $translation) {
 		if ($this->i18n_available === true) {
 			$this->translation = $translation;
+			$this->twig->addExtension(new \Skeleton\I18n\Template\Twig\Extension\Tigron());
 		} else {
 			throw new \Exception('Translation is not available, class not found');
 		}
