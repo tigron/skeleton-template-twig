@@ -103,7 +103,7 @@ class Twig {
 
 		$extensions = Config::get_extensions();
 		foreach ($extensions as $extension) {
-			$this->twig->addExtension(new $extension());
+			$this->twig->addExtension($extension);
 		}
 
 		$this->twig->getExtension('core')->setNumberFormat(2, '.', '');
