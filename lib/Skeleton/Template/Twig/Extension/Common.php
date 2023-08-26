@@ -274,8 +274,8 @@ class Common extends \Twig\Extension\AbstractExtension {
 				$type = 'string';
 			}
 
-			if ($type == 'string') {
-				$cmp = strcasecmp($property1, $property2);
+			if ($type == 'int') {
+                $cmp = $property1 > $property2 ? 1 : -1;
 			} elseif ($type == 'date') {
 				if (strtotime($property1) > strtotime($property2)) {
 					$cmp = 1;
@@ -283,7 +283,7 @@ class Common extends \Twig\Extension\AbstractExtension {
 					$cmp = -1;
 				}
 			} else {
-				$cmp = $property1 > $property2 ? 1 : -1;
+                $cmp = strcasecmp($property1, $property2);
 			}
 
 			if ($direction == 'desc') {
