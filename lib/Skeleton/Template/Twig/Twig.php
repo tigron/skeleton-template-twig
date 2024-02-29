@@ -220,4 +220,46 @@ class Twig {
 
 		return $this->twig->render($template, $this->variables);
 	}
+
+	/**
+	 * Validate
+	 *
+	 * @access public
+	 * @param string $template
+	 * @param string &$error
+	 * @return bool
+	 */
+	public function validate($template, &$error): bool {
+		$chain_loader = new \Twig\Loader\ChainLoader([
+			new \Twig\Loader\FilesystemLoader()
+		]);
+
+		$environment = new \Twig\Environment($chain_loader, [
+			'cache' => false,
+			'debug' => false,
+			'autoescape' => 'html',
+			'auto_reload' => false,
+			'strict_variables' => false,
+		]);
+
+		if (class_exists('\\Skeleton\\I18n\\Translation')) {
+			$environment->addExtension(new \Skeleton\I18n\Template\Twig\Extension\Tigron());
+		}
+		$environment->addExtension(new \Twig\Extension\StringLoaderExtension());
+		$environment->addExtension(new \Twig\Extra\Markdown\MarkdownExtension());
+		$environment->addExtension(new \Twig\Extra\Cache\CacheExtension());
+		$environment->addExtension(new \Twig\Extra\String\StringExtension());
+		$environment->addExtension(new \Skeleton\Template\Twig\Extension\Common());
+		foreach (\Skeleton\Template\Twig\Config::get_extensions() as $extension) {
+			$environment->addExtension(new $extension());
+		}
+
+		try {
+			$environment->createTemplate(file_get_contents($template), $template);
+		} catch (\Exception $e) {
+			$error = $e->getMessage();
+			return false;
+		}
+		return true;
+	}
 }
